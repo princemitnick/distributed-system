@@ -1,9 +1,9 @@
 package com.prince.fraud.controller;
 
 
+import com.prince.clients.fraud.FraudCheckResponse;
 import com.prince.fraud.model.FraudCheckHistory;
 import com.prince.fraud.service.FraudCheckHistoryService;
-import com.prince.fraud.vo.FraudCheckResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,0 +1,35 @@
+server:
+  port: 8888
+
+spring.application:
+    name: API-GATEWAY
+
+
+spring.zipkin:
+  base-url: http://localhost:9411
+
+spring.cloud:
+  gateway:
+    routes:
+      - id: CUSTOMER-SERVICE
+        uri: lb://CUSTOMER-SERVICE
+        predicates:
+          - Path=/api/v1/customers/**
+      - id: FRAUD-SERVICE
+        uri: lb://FRAUD-SERVICE
+        predicates:
+          - Path=/api/v1/fraud-check/**
+      - id: NOTIFICATION-SERVICE
+        uri: lb://NOTIFICATION-SERVICE
+        predicates:
+          - Path=/api/v1/notification/**
+
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    hostname: localhost

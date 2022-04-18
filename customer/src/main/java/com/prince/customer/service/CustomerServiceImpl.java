@@ -1,8 +1,11 @@
 package com.prince.customer.service;
 
+import com.prince.clients.fraud.FraudCheckResponse;
+import com.prince.clients.fraud.FraudClient;
+import com.prince.clients.notification.NotificationClient;
+import com.prince.clients.notification.NotificationRequest;
 import com.prince.customer.model.Customer;
 import com.prince.customer.repository.CustomerRepository;
-import com.prince.customer.vo.FraudCheckResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,13 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final String FRAUD_SERVICE_URL = "http://localhost:9091/api/v1/fraud-check/";
+    private final String FRAUD_SERVICE_URL = "http://FRAUD-SERVICE/api/v1/fraud-check/";
 
+    @Autowired
+    private NotificationClient notificationClient;
+
+    @Autowired
+    private FraudClient fraudClient;
     @Autowired
     CustomerRepository customerRepository;
 
@@ -34,11 +42,22 @@ public class CustomerServiceImpl implements CustomerService {
 
 
         customerRepository.saveAndFlush(customer);
-        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(FRAUD_SERVICE_URL,FraudCheckResponse.class, customer.getId());
+
+
+
+        FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
         if (fraudCheckResponse.isFraudster()) {
             throw new RuntimeException("Fraudster");
         }
 
+        notificationClient.sendNotification(
+                new NotificationRequest(customer.getId(), customer.getEmail(),
+                        String.format("Hello %s, welcome to princeCode", customer.getLastName()))
+        );
+
+        log.info("Customer : "+customer.getId()+" is registered");
+        log.info("Notification sent ");
+        log.info("Customer : "+customer.getId()+" is "+fraudCheckResponse.isFraudster());
 
         return null;
     }

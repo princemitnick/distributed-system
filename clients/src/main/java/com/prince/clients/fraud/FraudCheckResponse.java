@@ -1,12 +1,12 @@
-package com.prince.customer.vo;
+package com.prince.clients.fraud;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class FraudCheckResponse {
 
     boolean isFraudster;

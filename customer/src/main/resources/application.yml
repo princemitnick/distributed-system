@@ -1,6 +1,9 @@
 server:
   port: 9090
 
+spring.zipkin:
+  base-url: http://localhost:9411
+
 spring.application:
   name: CUSTOMER-SERVICE
 
@@ -13,14 +16,16 @@ spring.jpa:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.124.51:5432/customers
+    url: jdbc:postgresql://192.168.10.55:5432/customers
     username: postgres
     password: Welcome
 
 
 eureka:
   client:
+    fetch-registry: true
+    register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
   instance:
     hostname: localhost
