@@ -16,9 +16,11 @@ spring.zipkin:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.10.55:5432/notifications
+    url: jdbc:postgresql://10.60.132.163:5432/notifications
     username: postgres
     password: Welcome
+  rabbitmq:
+    addresses: localhost:5672
 
 eureka:
   client:
@@ -28,3 +30,12 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
+
+
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queue:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key

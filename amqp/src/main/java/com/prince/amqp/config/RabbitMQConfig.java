@@ -11,12 +11,14 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 @AllArgsConstructor
 public class RabbitMQConfig {
 
     private final ConnectionFactory connectionFactory;
 
+    @Bean
     public AmqpTemplate amqpTemplate(){
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         MessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
